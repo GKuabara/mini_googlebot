@@ -93,7 +93,7 @@ void quick_sort(SITE **sites, int start, int end){
 
     while(i <= j){
         //going to right with 'i'
-        while(i < end && site_get_relevance(sites[i]) <= site_get_relevance(sites[pivo])) i++;
+        while(i <= end && site_get_relevance(sites[i]) <= site_get_relevance(sites[pivo])) i++;
         //going to left with 'j'
         while(site_get_relevance(sites[j]) > site_get_relevance(sites[pivo])) j--;
         //changing 'i' and 'j' positions

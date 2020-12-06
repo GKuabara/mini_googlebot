@@ -78,12 +78,12 @@ int site_get_key(SITE *site) {
     return -1;
 }
 
-char *site_getname(SITE *site){
+char *site_get_name(SITE *site){
     if(site) return site->name;
     return NULL;
 }
 
-char *site_getURL(SITE *site){
+char *site_get_URL(SITE *site){
     if(site) return site->URL;
     return NULL;
 }
@@ -120,8 +120,8 @@ boolean site_remove_keyword(SITE *site, char *word){
     return FALSE;
 }
 
-char *site_getkeywords(SITE *site, int index){
-    if(site) return site->keywords[index];
+char **site_get_keywords(SITE *site){
+    if(site) return site->keywords;
     return NULL;
 }
 
@@ -159,7 +159,7 @@ char *site_struct_to_string(SITE *site){
 boolean compare_string_with_keywords(SITE *site, char *str){
     // go through site's keywords verifying if some matches 'str'
     for(int i = 0; i < site->num_kw; i++){
-        printf("%s\n", site->keywords[i]);
+        //printf("%s\n", site->keywords[i]);
         if(strcmp(site->keywords[i], str) == 0)
             return TRUE;
     }

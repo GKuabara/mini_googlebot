@@ -303,12 +303,13 @@ boolean tree_update_relevance(TREE *tree, int key, int relevance){
 	return FALSE;
 }
 
-void build_sites_list(SITE **sites, NODE *actual, char *str, int *count){
+void build_sites_list(SITE ***sites, NODE *actual, char *str, int *count){
 	if(!actual) return;
 
 	if(compare_string_with_keywords(actual->site, str)){
-		sites = realloc(sites, sizeof(SITE *) * (*count + 1));
-		sites[(*count)++] = actual->site;
+		*sites = realloc(*sites, sizeof(SITE *) * (*count + 1));
+		(*sites)[(*count)++] = actual->site;
+		//site_print(sites[(*count) - 1]);
 	}
 
 	build_sites_list(sites, actual->left, str, count);
@@ -321,7 +322,7 @@ void search_and_sort_sites_with_keyword(TREE *tree, char *str){
 	// funtion to look for sites with keyword 'str'
 	int count = 0;
 	SITE **sites = NULL;
-	build_sites_list(sites, tree->root, str, &count);
+	build_sites_list(&sites, tree->root, str, &count);
 	if(!sites){
 		printf("Sorry, there are no sites with your keyword...\n");
 		return;
@@ -332,7 +333,34 @@ void search_and_sort_sites_with_keyword(TREE *tree, char *str){
 
 	printf("\nSo, these are the sites with keyword '%s':\n", str);
 	for (int i = count - 1; i >= 0; i--)
-		printf("%s - %s\n", site_get_name(sites[i]), site_get_URL(sites[i]));
-
+		printf("%d - %s - %s\n", site_get_relevance(sites[i]), site_get_name(sites[i]), site_get_URL(sites[i]));
+	printf("\n");
 	free(sites); sites = NULL;
+}
+
+TRIE *get_all_keywords_from_sites(SITE **sites, int count){
+	TRIE *all_keywords = trie_create();
+
+	for(int i = 0; i < count; i++){
+		int temp = site_get_nkeywords(sites[i]);
+		
+		for(int j = 0; j < temp; j++)
+			trie_insert_word(all_keywords, site_get_keywords(sites[i], j));
+	}
+	return all_keywords;
+}
+
+void sites_suggestions(TREE *tree, char *str){
+	if(tree_empty(tree)) return;
+
+	// funtion to look for sites with keyword 'str'
+	int count = 0;
+	SITE **sites = NULL;
+	build_sites_list(&sites, tree->root, str, &count);
+	if(!sites){
+		printf("Sorry, there are no sites with your keyword...\n");
+		return;
+	}
+
+	TRIE *all_keywords = get_all_keywords_from_sites(sites, count);
 }
