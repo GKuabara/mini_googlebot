@@ -92,7 +92,7 @@ void operations(TREE *tree){
 				printf("Type your keyword and just wait for some suggestions ~(‾▿‾)~ : ");
 				getchar();
 				char *str6 = readLine(stdin);
-				sites_suggestions(tree, str6);
+				//sites_suggestions(tree, str6);
 				free(str6); str6 = NULL;
 				break;
 
@@ -121,18 +121,18 @@ int main() {
 
 	while (!feof(fp)){
 		SITE* site = create_site_from_googlebot(fp);
-		tree_insert_site(tree, site);
+		insert_node(tree, site);
 		nSites++;
 	}
 	fclose(fp);
 	printf("Success Reading Input Data! Now, you have a tree bro!!!\n\n");
 
 	start_messages(); //messages that show the commands
-	tree_print(tree);
+	print_tree(tree);
 	
 	operations(tree); //function that does all the operations required
 
-	tree_erase(&tree);
+	tree_delete(&tree);
 
 	return 0;	
 }

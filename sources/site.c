@@ -68,7 +68,7 @@ SITE *site_copy(SITE *site){
     new->URL = strPart(site->URL, NULL, NULL);
     new->num_kw = site->num_kw;
     for(int i = 0; i < site->num_kw; i++)
-        new->keywords[i] = strPart(site->keywords, NULL, NULL);
+        new->keywords[i] = strPart(site->keywords[i], NULL, NULL);
 
     return new;
 }
