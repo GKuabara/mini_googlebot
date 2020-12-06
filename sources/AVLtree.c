@@ -4,6 +4,7 @@
 #include "AVLtree.h"
 #include "site.h"
 #include "utils.h"
+#include "trie.h"
 
 struct node_{
 	SITE *site;
@@ -316,6 +317,42 @@ void build_sites_list(SITE ***sites, NODE *actual, char *str, int *count){
 	build_sites_list(sites, actual->right, str, count);
 }
 
+// Parte feita pelo Kibon
+
+// Esclarecimentos
+/*
+Achei melhor fazer uma árvore com os sites que contém as keywords, pois evita problemas de
+complexidade relativo a verificação de que um site já não foi adicionado. Utilizei a árvore AVL,
+pois sua estrutura já está adequada para o recebimento de sites.
+
+Quanto a questão do passo d), precisaremos fazer com que obtenha-se os 5 sites mais relevantes a partir da árvore e não de uma lista agora.
+
+TO DO: criar uma função para percorrer a TRIE tree para fazermos as operações para cada keyword da árvore
+*/
+
+/*
+void insert_sites_with_keyword_in_tree(SITE* siteTree, NODE *actual, char* keyword){
+	if(!actual) return;
+
+	if (compare_strings_with_keywords(actual->site, keyword))
+		insert_node(siteTree, actual->site);
+
+	build_sites_list(actual->left, keywords, count);
+	build_sites_list(actual->right, keywords, count);
+}
+
+TREE* create_tree_with_sites_with_keywords(TRIE* keywords, TREE* tree){
+	TREE* siteTree = create_tree();
+
+	// TO DO: É necessário fazer uma função para percorrer cada nó da trie tree
+	for (keyword in all_keywords){
+		insert_sites_with_keyword_in_tree(siteTree, tree->root, keyword);
+	}
+
+	return siteTree;
+}
+*/
+
 void search_and_sort_sites_with_keyword(TREE *tree, char *str){
 	if(tree_empty(tree)) return;
 
@@ -339,7 +376,8 @@ void search_and_sort_sites_with_keyword(TREE *tree, char *str){
 }
 
 TRIE *get_all_keywords_from_sites(SITE **sites, int count){
-	TRIE *all_keywords = trie_create();
+	TRIE *all_keywords = NULL;
+	all_keywords = trie_create();
 
 	for(int i = 0; i < count; i++){
 		int temp = site_get_nkeywords(sites[i]);
@@ -363,4 +401,7 @@ void sites_suggestions(TREE *tree, char *str){
 	}
 
 	TRIE *all_keywords = get_all_keywords_from_sites(sites, count);
+	
+	// Parte feita pelo Kibon
+	// TREE* sitelist = create_tree_with_sites_with_keywords(all_keywords);
 }
