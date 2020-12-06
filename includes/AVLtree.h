@@ -1,6 +1,8 @@
 #ifndef BINTREE_H
 #define BINTREE_H
 
+#include "site.h"
+
 #define boolean int
 #define TRUE 1
 #define FALSE 0
@@ -51,7 +53,7 @@ boolean tree_update_relevance(TREE *tree, int key, int relevance);
 
 SITE *list_get_site(TREE *tree, int key);
 
-// sites from search by keyword
+// search sites with a specific keyword
 SITE **search_by_keyword(TREE *tree, char *str, int *count);
 void search_and_sort_sites_with_keyword(TREE *tree, char *str);
 

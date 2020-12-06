@@ -12,6 +12,7 @@ boolean site_delete(SITE **site);
 
 void site_print(SITE *site);
 
+SITE *site_copy(SITE *site);
 int site_get_key(SITE *site);
 char *site_get_name(SITE *site);
 char *site_get_URL(SITE *site);

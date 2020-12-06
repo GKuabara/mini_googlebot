@@ -60,6 +60,19 @@ void site_print(SITE *site) {
         printf("Sorry bro, no data here\n");
 }
 
+SITE *site_copy(SITE *site){
+    SITE *new = malloc(sizeof(SITE));
+    new->key = site->key;
+    new->name = strPart(site->name, NULL, NULL);
+    new->relevance = site->relevance;
+    new->URL = strPart(site->URL, NULL, NULL);
+    new->num_kw = site->num_kw;
+    for(int i = 0; i < site->num_kw; i++)
+        new->keywords[i] = strPart(site->keywords, NULL, NULL);
+
+    return new;
+}
+
 int site_get_key(SITE *site) {
     if (site) return site->key;
     return -1;

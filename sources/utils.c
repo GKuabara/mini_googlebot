@@ -91,7 +91,7 @@ void quick_sort(SITE **sites, int start, int end){
 
     //int rev_pivo = site_get_relevance(sites[pivo]);
 
-    while(i < j){
+    while(i <= j){
         //going to right with 'i'
         while(i < end && site_get_relevance(sites[i]) <= site_get_relevance(sites[pivo])) i++;
         //going to left with 'j'
@@ -111,8 +111,8 @@ void quick_sort(SITE **sites, int start, int end){
     sites[start] = temp;
 
     //recursive calls
-    quick_sort(sites, start, pivo-1);
-    quick_sort(sites, pivo+1, end);
+    quick_sort(sites, start, pivo - 1);
+    quick_sort(sites, pivo + 1, end);
 }
 
 int count_char (char *string, char searched){

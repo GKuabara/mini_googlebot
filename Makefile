@@ -4,13 +4,13 @@ SOURCES=./sources
 BINARY=./main
 PROG=./main.c
 FLAGS=-Wall -Werror -g
-OBJFILES = list.o site.o utils.o
+OBJFILES = AVLtree.o site.o utils.o
 
-all: list.o site.o utils.o
+all: AVLtree.o site.o utils.o
 	@$(CC) $(PROG) $(OBJFILES) -I $(INCLUDES) -o $(BINARY) $(FLAGS)
 
-list.o:
-	@$(CC) -c $(SOURCES)/list.c -I $(INCLUDES)
+AVLtree.o:
+	@$(CC) -c $(SOURCES)/AVLtree.c -I $(INCLUDES)
 
 site.o:
 	@$(CC) -c $(SOURCES)/site.c -I $(INCLUDES)
@@ -28,4 +28,4 @@ clean:
 	@rm -r *.o 
 
 zip:
-	zip -r Project_1.zip Makefile ./includes/ ./sources/ ./main.c ./googlebot.txt
+	zip -r MiniGooglebot2.zip Makefile ./includes/ ./sources/ ./main.c ./googlebot.txt

@@ -83,7 +83,7 @@ void print(NODE *node){
 	if(!node) return;
 	// in-ordem
 	print(node->left);
-	printf("node: %d\n", site_print(node->site));
+	site_print(node->site);
 	print(node->right);
 }
 void print_tree(TREE *tree){
@@ -172,7 +172,7 @@ NODE *search_node(NODE *node, int key){
 
 NODE *insert(NODE *node, SITE *new_site){
 	// insert node
-	if(!node) return site_create(new_site);
+	if(!node) return node_create(new_site);
 
 	// search for insertion
 	int num = site_get_key(new_site);
@@ -224,10 +224,11 @@ NODE *delete(NODE **node, int num){
 
 			// free (*node)->site, and copy temp->site to (*node)->site
 			site_delete(&(*node)->site); 
-			(*node)->site = site_create(site_get_key(temp->site));
+			memcpy((*node)->site, temp->site, sizeof(SITE));
+			//(*node)->site = site_copy(temp->site);
 
 			// delete 'temp' (*node) that was copied
-			(*node)->right = delete(&(*node)->right, site_get_key((*node)->site));
+			(*node)->right = delete(&(*node)->right, site_get_key(temp->site));
 		}
 		// any or one subtree cases
 		else{
@@ -269,7 +270,7 @@ boolean tree_insert_keyword(TREE *tree, int key, char *keyword){
 	if(tree_empty(tree)) return FALSE;
 
 	// gets the first site with key equal or larger than the input key
-	NODE *actual = search_node(tree, key);
+	NODE *actual = search_node(tree->root, key);
 
 	// if 'actual' key is equal as the input key, so insert keyword
 	if(actual && site_get_key(actual->site) == key){
@@ -288,7 +289,7 @@ boolean tree_update_relevance(TREE *tree, int key, int relevance){
 	if(tree_empty(tree)) return FALSE;
 
 	// gets the first site with key equal or larger than the input key
-	NODE *actual = search_node(tree, key);
+	NODE *actual = search_node(tree->root, key);
 
 	// if 'actual' key is equal as the input key, so update relevance
 	if(actual && site_get_key(actual->site) == key){
