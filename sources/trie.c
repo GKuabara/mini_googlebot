@@ -5,6 +5,15 @@
 #include "utils.h"
 #include "trie.h"
 
+struct letter_{
+	LETTER *sub[alphabetSize];
+	boolean end;
+};
+
+struct trie_{
+	LETTER *root;
+};
+
 TRIE *trie_create(){
 	TRIE *db = malloc(sizeof(TRIE));
 	db->root = trie_node_create();
@@ -12,14 +21,14 @@ TRIE *trie_create(){
 	return db;
 }
 
-NODE *trie_node_create(){
-	NODE *node = malloc(sizeof(NODE));
+LETTER *trie_node_create(){
+	LETTER *node = malloc(sizeof(LETTER));
 	for(int i = 0; i < alphabetSize; i++) node->sub[i] = NULL;
 	node->end = 0;
 	return node;
 }
 
-void trie_free_nodes(NODE *node){
+void trie_free_nodes(LETTER *node){
 	
 	// verifies if the node exists, then call it recursively until reaches a leaf
 	for(int i = 0; i < alphabetSize; i++){
@@ -38,7 +47,7 @@ void trie_destroy(TRIE *db){
 boolean trie_insert_word(TRIE *db, char *str){
 	if(!db || !str) return FALSE;
 
-	NODE *actual = db->root;
+	LETTER *actual = db->root;
 
 	// get each letter of the string going through the tree
 	for(int i = 0; str[i] != '\0'; i++){
@@ -46,8 +55,7 @@ boolean trie_insert_word(TRIE *db, char *str){
 
 		// if the letter doesn't exists, then create it
 		if(!actual->sub[index]){
-			actual->sub[index] = trie_trie_node_create();
-			actual->sub[index]->key = str[i];
+			actual->sub[index] = trie_node_create();
 		}
 		actual = actual->sub[index];
 	}
@@ -59,7 +67,7 @@ boolean trie_insert_word(TRIE *db, char *str){
 boolean trie_search_word(TRIE *db, char *str){
 	if(!db || !str) return FALSE;
 
-	NODE *actual = db->root;
+	LETTER *actual = db->root;
 
 	for(int i = 0; str[i] != '\0'; i++){
 		// gets the position of the letter in the array

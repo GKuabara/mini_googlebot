@@ -4,9 +4,9 @@ SOURCES=./sources
 BINARY=./main
 PROG=./main.c
 FLAGS=-Wall -Werror -g
-OBJFILES = AVLtree.o site.o utils.o
+OBJFILES = AVLtree.o site.o utils.o trie.o
 
-all: AVLtree.o site.o utils.o
+all: AVLtree.o site.o utils.o trie.o
 	@$(CC) $(PROG) $(OBJFILES) -I $(INCLUDES) -o $(BINARY) $(FLAGS)
 
 AVLtree.o:
@@ -17,6 +17,9 @@ site.o:
 
 utils.o:
 	@$(CC) -c $(SOURCES)/utils.c -I $(INCLUDES)
+
+trie.o:
+	@$(CC) -c $(SOURCES)/trie.c -I $(INCLUDES)
 
 valgrind:
 	@valgrind --track-origins=yes --leak-check=full --show-leak-kinds=all $(BINARY)

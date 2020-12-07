@@ -6,23 +6,13 @@
 #define boolean int
 #define alphabetSize 26
 
-typedef struct node_ NODE;
+typedef struct letter_ LETTER;
 typedef struct trie_ TRIE;
 
-struct node_{
-	NODE *sub[alphabetSize];
-	char key;
-	boolean end;
-};
-
-struct trie_{
-	NODE *root;
-};
-
 TRIE *trie_create();
-NODE *trie_node_create();
+LETTER *trie_node_create();
 
-void trie_free_nodes(NODE *node);
+void trie_free_nodes(LETTER *node);
 void trie_destroy(TRIE *db);
 
 boolean trie_insert_word(TRIE *db, char *str);

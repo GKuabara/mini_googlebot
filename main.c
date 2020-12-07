@@ -34,14 +34,14 @@ void start_messages(){
 void operations(TREE *tree){
 
 	while(TRUE){
-		printf("Please, type a command: ");
+		printf("\nPlease, type a command: ");
 		int op;
 		scanf("%d", &op);
 
 		switch(op){
 			//insert new site
 			case 1:
-				printf("Please, write all the site information as CSV: ");
+				printf("\nPlease, write all the site information as CSV: ");
 				getchar();
 				SITE *site = create_site_from_googlebot(stdin);
 				insert_node(tree, site);
@@ -49,7 +49,7 @@ void operations(TREE *tree){
 
 			//remove site
 			case 2:
-				printf("Type the site code you want to delete: ");
+				printf("\nType the site code you want to delete: ");
 				int code2;
 				scanf("%d", &code2);
 				delete_node(tree, code2);
@@ -57,11 +57,11 @@ void operations(TREE *tree){
 
 			//new key word
 			case 3:
-				printf("Type the site code you want to add a keyword: ");
+				printf("\nType the site code you want to add a keyword: ");
 				int code3;
 				scanf("%d", &code3); getchar();
 
-				printf("Type the new keyword: ");
+				printf("\nType the new keyword: ");
 				char *keyword = readLine(stdin);
 				
 				tree_insert_keyword(tree, code3, keyword);
@@ -70,18 +70,18 @@ void operations(TREE *tree){
 
 			//update relevance
 			case 4:
-				printf("Type the site code you want to update relevance: ");
+				printf("\nType the site code you want to update relevance: ");
 				int code4;
 				scanf("%d", &code4);
 
-				printf("Type the new relevance: ");
+				printf("\nType the new relevance: ");
 				int relevance;
 				scanf("%d", &relevance);
 				tree_update_relevance(tree, code4, relevance);
 				break;
 
 			case 5:
-				printf("Type your keyword and we search sites for you ٩(^‿^)۶ : ");
+				printf("\nType your keyword and we search sites for you ٩(^‿^)۶ : ");
 				getchar();
 				char *str5 = readLine(stdin);
 				search_and_sort_sites_with_keyword(tree, str5);
@@ -89,10 +89,10 @@ void operations(TREE *tree){
 				break;
 
 			case 6:
-				printf("Type your keyword and just wait for some suggestions ~(‾▿‾)~ : ");
+				printf("\nType your keyword and just wait for some suggestions ~(‾▿‾)~ : ");
 				getchar();
 				char *str6 = readLine(stdin);
-				//sites_suggestions(tree, str6);
+				sites_suggestions(tree, str6);
 				free(str6); str6 = NULL;
 				break;
 
@@ -103,7 +103,7 @@ void operations(TREE *tree){
 				return;
 
 			default:
-				printf("Please, can you type a valid operation number? ლ(ಠ益ಠლ)╯\n");
+				printf("\nPlease, can you type a valid operation number? ლ(ಠ益ಠლ)╯\n");
 				break;
 		}
 	}

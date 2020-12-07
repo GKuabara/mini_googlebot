@@ -120,8 +120,8 @@ boolean site_remove_keyword(SITE *site, char *word){
     return FALSE;
 }
 
-char **site_get_keywords(SITE *site){
-    if(site) return site->keywords;
+char *site_get_keywords(SITE *site, int index){
+    if(site) return site->keywords[index];
     return NULL;
 }
 
@@ -154,6 +154,27 @@ char *site_struct_to_string(SITE *site){
         if(i != site->num_kw - 1) strcat(line, ",");
     }
     return line;
+}
+
+SITE* create_site_from_googlebot(FILE* fp){
+    char* line = readLine(fp);
+    int nKeywords = 0;
+    nKeywords = count_char(line, ',') - 3;
+    char* codeChar = strsep(&line, ",");
+    int code = atoi(codeChar);
+    char* name = strsep(&line, ",");
+    int relevance = atoi(strsep(&line, ","));
+    char* url = strsep(&line, ",");
+    char** keywords = malloc(nKeywords * sizeof(char*));
+    for (int i = 0; i < nKeywords; i++){
+        keywords[i] = strsep(&line, ",");
+    }
+
+    SITE* site = site_create(code, name, relevance, url, keywords, nKeywords);
+
+    free(codeChar);
+    free(keywords);
+    return site;
 }
 
 boolean compare_string_with_keywords(SITE *site, char *str){

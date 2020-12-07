@@ -122,23 +122,19 @@ int count_char (char *string, char searched){
     return count;
 }
 
-SITE* create_site_from_googlebot(FILE* fp){
-    char* line = readLine(fp);
-    int nKeywords = 0;
-    nKeywords = count_char(line, ',') - 3;
-    char* codeChar = strsep(&line, ",");
-    int code = atoi(codeChar);
-    char* name = strsep(&line, ",");
-    int relevance = atoi(strsep(&line, ","));
-    char* url = strsep(&line, ",");
-    char** keywords = malloc(nKeywords * sizeof(char*));
-    for (int i = 0; i < nKeywords; i++){
-        keywords[i] = strsep(&line, ",");
+void bubble_sort(SITE **array, int len){
+    for(int i = 0; i < 5; i++){          
+        for(int j = 0; j < len - i -1; j++){  
+            if(site_get_relevance(array[j]) > site_get_relevance(array[j+1])){
+                SITE *temp = array[j+1]; 
+                array[j+1] = array[j]; 
+                array[j] = temp;
+            }
+        }
     }
+}
 
-    SITE* site = site_create(code, name, relevance, url, keywords, nKeywords);
-
-    free(codeChar);
-    free(keywords);
-    return site;
+int char_to_int(char c){
+    int index = ((int)c - (int)'a');
+    return index;
 }

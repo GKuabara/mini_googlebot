@@ -54,6 +54,8 @@ boolean tree_empty(TREE *tree){
 	return FALSE;
 }
 
+//__________________________________________________________________________________________________
+
 int search_tree_height(NODE *node){
 	if(!node) return 0;
 
@@ -80,6 +82,8 @@ int tree_totalnodes(TREE *tree){
 	return count_nodes(tree->root);
 }
 
+//__________________________________________________________________________________________________
+
 void print(NODE *node){
 	if(!node) return;
 	// in-ordem
@@ -89,6 +93,7 @@ void print(NODE *node){
 }
 void print_tree(TREE *tree){
 	print(tree->root);
+	printf("\n");
 }
 
 void print2DUtil(NODE *node, int space) { 
@@ -112,6 +117,8 @@ void print2D(TREE *tree) {
    print2DUtil(tree->root, 0); 
 }
 
+//__________________________________________________________________________________________________
+
 int node_height(NODE *node){
 	if(!node) return 0;
 	return node->height;
@@ -131,6 +138,8 @@ NODE *smallest_node_key(NODE *node){
 	while(actual->left) actual = actual->left;
 	return actual;
 }
+
+//__________________________________________________________________________________________________
 
 NODE *rotation_Left(NODE *node){
 	NODE *aux = node->right;
@@ -162,12 +171,14 @@ NODE *rotation_Right_Left(NODE *node){
 	return rotation_Left(node);
 }
 
+//__________________________________________________________________________________________________
+
 NODE *search_node(NODE *node, int key){
 	if(!node) return NULL;
 	int temp = site_get_key(node->site);
 
 	if(temp == key) return node;
-	else if(temp < key) return search_node(node->left, key);
+	else if(temp > key) return search_node(node->left, key);
 	else return search_node(node->right, key);
 }
 
@@ -206,6 +217,44 @@ void insert_node(TREE *tree, SITE *new_site){
 	}
 	tree->root = insert(tree->root, new_site);
 }
+
+NODE *insert_by_relevance(NODE *node, SITE *new_site){
+	// insert node
+	if(!node) return node_create(new_site);
+
+	// search for insertion
+	int num = site_get_relevance(new_site);
+	int key = site_get_relevance(node->site);
+	if(num < key) node->left = insert_by_relevance(node->left, new_site);
+	else if(num > key) node->right = insert_by_relevance(node->right, new_site);
+
+	// returnin through the recursive calls, updating height, balance, and rotating if necessary
+	node->height = 1 + large(node_height(node->left), node_height(node->right));
+
+	int balance = balance_factor(node);
+	if(balance > 1){
+		int key = site_get_relevance(node->left->site);
+		if(num < key) node = rotation_Right(node);
+		else node = rotation_Left_Right(node);
+	}
+	if(balance < -1){
+		int key = site_get_relevance(node->right->site);
+		if(num > key) node = rotation_Left(node);
+		else node = rotation_Right_Left(node);
+	}
+
+	return node;
+}
+
+void insert_node_by_relevance(TREE *tree, SITE *new_site){
+	if(!tree){
+		printf("No tree, sorry...\n");
+		return;
+	}
+	tree->root = insert_by_relevance(tree->root, new_site);
+}
+
+//__________________________________________________________________________________________________
 
 NODE *delete(NODE **node, int num){
 	if(*node == NULL) return *node;
@@ -266,6 +315,8 @@ void delete_node(TREE *tree, int key){
 	tree->root = delete(&tree->root, key);
 }
 
+//__________________________________________________________________________________________________
+
 boolean tree_insert_keyword(TREE *tree, int key, char *keyword){
 	if(tree_empty(tree)) return FALSE;
 
@@ -304,54 +355,19 @@ boolean tree_update_relevance(TREE *tree, int key, int relevance){
 	return FALSE;
 }
 
+//__________________________________________________________________________________________________
+
 void build_sites_list(SITE ***sites, NODE *actual, char *str, int *count){
 	if(!actual) return;
 
 	if(compare_string_with_keywords(actual->site, str)){
 		*sites = realloc(*sites, sizeof(SITE *) * (*count + 1));
 		(*sites)[(*count)++] = actual->site;
-		//site_print(sites[(*count) - 1]);
 	}
 
 	build_sites_list(sites, actual->left, str, count);
 	build_sites_list(sites, actual->right, str, count);
 }
-
-// Parte feita pelo Kibon
-
-// Esclarecimentos
-/*
-Achei melhor fazer uma árvore com os sites que contém as keywords, pois evita problemas de
-complexidade relativo a verificação de que um site já não foi adicionado. Utilizei a árvore AVL,
-pois sua estrutura já está adequada para o recebimento de sites.
-
-Quanto a questão do passo d), precisaremos fazer com que obtenha-se os 5 sites mais relevantes a partir da árvore e não de uma lista agora.
-
-TO DO: criar uma função para percorrer a TRIE tree para fazermos as operações para cada keyword da árvore
-*/
-
-/*
-void insert_sites_with_keyword_in_tree(SITE* siteTree, NODE *actual, char* keyword){
-	if(!actual) return;
-
-	if (compare_strings_with_keywords(actual->site, keyword))
-		insert_node(siteTree, actual->site);
-
-	build_sites_list(actual->left, keywords, count);
-	build_sites_list(actual->right, keywords, count);
-}
-
-TREE* create_tree_with_sites_with_keywords(TRIE* keywords, TREE* tree){
-	TREE* siteTree = create_tree();
-
-	// TO DO: É necessário fazer uma função para percorrer cada nó da trie tree
-	for (keyword in all_keywords){
-		insert_sites_with_keyword_in_tree(siteTree, tree->root, keyword);
-	}
-
-	return siteTree;
-}
-*/
 
 void search_and_sort_sites_with_keyword(TREE *tree, char *str){
 	if(tree_empty(tree)) return;
@@ -370,22 +386,48 @@ void search_and_sort_sites_with_keyword(TREE *tree, char *str){
 
 	printf("\nSo, these are the sites with keyword '%s':\n", str);
 	for (int i = count - 1; i >= 0; i--)
-		printf("%d - %s - %s\n", site_get_relevance(sites[i]), site_get_name(sites[i]), site_get_URL(sites[i]));
+		printf("%s - %s\n", site_get_name(sites[i]), site_get_URL(sites[i]));
 	printf("\n");
 	free(sites); sites = NULL;
 }
 
+//__________________________________________________________________________________________________
+
+// gets all keywords from a sites' array into a TRIE tree
 TRIE *get_all_keywords_from_sites(SITE **sites, int count){
-	TRIE *all_keywords = NULL;
-	all_keywords = trie_create();
+	TRIE *all_keywords = trie_create();
 
 	for(int i = 0; i < count; i++){
 		int temp = site_get_nkeywords(sites[i]);
-		
-		for(int j = 0; j < temp; j++)
-			trie_insert_word(all_keywords, site_get_keywords(sites[i], j));
+
+		for(int j = 0; j < temp; j++){
+			char *aux = site_get_keywords(sites[i], j);
+			trie_insert_word(all_keywords, aux);
+		}
 	}
 	return all_keywords;
+}
+
+// search for sites in the data base that has at least one keyword in the TRIE
+void search_sites_keywords_in_trie(SITE ***all_sites, NODE *actual, TRIE *all_keywords, int *nsites){
+	if(!actual) return;
+
+	int n_kw = site_get_nkeywords(actual->site); // how many keywords a site has
+	
+	// loop that pass through each site's keywords verifying if it exists in the TRIE
+	// if exists, allocate more space in the SITE array
+	for(int i = 0; i < n_kw; i++){
+		char *temp = site_get_keywords(actual->site, i);
+		
+		if(trie_search_word(all_keywords, temp)){
+			*all_sites = realloc(*all_sites, sizeof(SITE *) * (*nsites + 1));
+			(*all_sites)[(*nsites)++] = actual->site;
+			break;
+		}
+	}
+	// recursive call to pass through all nodes of the AVL tree
+	search_sites_keywords_in_trie(all_sites, actual->left, all_keywords, nsites);
+	search_sites_keywords_in_trie(all_sites, actual->right, all_keywords, nsites);
 }
 
 void sites_suggestions(TREE *tree, char *str){
@@ -400,8 +442,22 @@ void sites_suggestions(TREE *tree, char *str){
 		return;
 	}
 
+	// gets all keywords from our sites' array into a TRIE TREE
 	TRIE *all_keywords = get_all_keywords_from_sites(sites, count);
-	
-	// Parte feita pelo Kibon
-	// TREE* sitelist = create_tree_with_sites_with_keywords(all_keywords);
+
+	// search for sites that has at least one keyword in the TRIE, build another sites' array
+	int nsites = 0;
+	SITE **all_sites = NULL;
+	search_sites_keywords_in_trie(&all_sites, tree->root, all_keywords, &nsites);
+
+	// bubble sort for just 5 positions of the sites' array
+	bubble_sort(all_sites, nsites);
+
+	printf("\nSuggested sites for you, baby:\n");
+	for(int i = 1; i <= 5; i++)
+		printf("%s - %s\n", site_get_name(all_sites[nsites - i]), site_get_URL(all_sites[nsites - i]));
+
+	free(sites);
+	trie_destroy(all_keywords);
+	free(all_sites);
 }
