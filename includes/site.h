@@ -24,8 +24,6 @@ int site_get_nkeywords(SITE *site);
 boolean site_add_keyword(SITE *site, char *word);
 boolean site_remove_keyword(SITE *site, char *word);
 
-char *site_struct_to_string(SITE *site);
-
 SITE* create_site_from_googlebot(FILE* fp);
 
 boolean compare_string_with_keywords(SITE *site, char *str);
