@@ -1,9 +1,9 @@
-CC=gcc
-INCLUDES=./includes
-SOURCES=./sources
-BINARY=./main
-PROG=./main.c
-FLAGS= -Wall -Werror -g -o
+CC = gcc
+INCLUDES = ./includes
+SOURCES = ./sources
+BINARY = main
+PROG = main.c
+FLAGS = -Wall -Werror -g -o
 
 all:
 	@$(CC) $(PROG) $(SOURCES)/* $(FLAGS) $(BINARY) -I $(INCLUDES)
