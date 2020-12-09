@@ -12,10 +12,10 @@ valgrind:
 	@valgrind --track-origins=yes --leak-check=full --show-leak-kinds=all $(BINARY)
 
 run:
-	@$(BINARY)
+	@./$(BINARY)
 
 clean: 
-	@rm -r *.o 
+	@rm -r $(BINARY)
 
 zip:
 	zip -r MiniGooglebot2.zip Makefile ./includes/ ./sources/ ./main.c ./googlebot.txt
