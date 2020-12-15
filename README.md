@@ -41,23 +41,23 @@ Agora, temos um vetor de ponteiros para sites que precisamos classificar por rel
 ## Instruções de uso
 Ao executar o programa, ele primeiro lerá um arquivo csv chamado "googlebot.txt". Portanto, também pode ser alterado dentro do main.c. Então, algumas mensagens iniciais serão exibidas para o usuário, mostrando quais comandos numéricos são possíveis neste programa.
 
-#### 1. Inserção de um site:
+1. **Inserção de um site:**
 	* Pede para o usuário inserir uma linha no formato de csv, de acordo com os parâmetros especificados anteriormente no README.
 
-#### 2. Remoção de um Site:
+2. **Remoção de um Site:**
 	* Requisita o código de um site para removê-lo.
 
-#### 3. Adicionar Palavra-Chave a Site:
+3. **Adicionar Palavra-Chave a Site:**
 	* Requisita o código do site e a palavra-chave para adicioná-lo, caso houver espaço.
 
-#### 4. Atualizar Relevancia de um Site:
+4. **Atualizar Relevancia de um Site:**
 	* Requisita o código do site e a nova relevancia a ser alterada.
 
-#### 5. Busca por Palavra-Chave(Função Principal):
+5. **Busca por Palavra-Chave(Função Principal):**
 	* Requisita somente uma palavra-chave de entrada e imprime todos os sites com ela.
 
-#### 6. Sugestões de Sites:
+6. **Sugestões de Sites:**
 	* Requisita somente uma palavra-chave de entrada e procura sites com palavras-chaves relacionadas como já explicado mais a fundo em outro tópico.
 
-#### 7. Encerra o Programa:
+7. **Encerra o Programa:**
 	* Desaloca toda a memória que o programa usa no momento e encerra o programa.
