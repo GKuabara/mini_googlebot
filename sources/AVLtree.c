@@ -382,7 +382,7 @@ void search_and_sort_sites_with_keyword(TREE *tree, char *str){
 	}
 
 	// sort matrix 'sites'
-	quick_sort(sites, 0, count - 1);
+	heap_sort(sites, count);
 
 	printf("\nSo, these are the sites with keyword '%s':\n", str);
 	for (int i = count - 1; i >= 0; i--)

@@ -80,39 +80,41 @@ char* strAppend(char* str, char* add) {
     return new;
 }
 
-void quick_sort(SITE **sites, int start, int end){
-    //base case
-    if(start >= end) return;
+void heapify(SITE **array, int n, int head){
+    int big = head;
+    int left =  big * 2 + 1;
+    int right = big * 2 + 2;
 
-    //chossing the "pivo" element
-    int pivo = start;
-    int i = start + 1;
-    int j = end;
+    // if the left is larger than its root
+    if(left < n && site_get_relevance(array[left]) > site_get_relevance(array[big])) big = left;
+    // if the right is larger than its root
+    if(right < n && site_get_relevance(array[right]) > site_get_relevance(array[big])) big = right;
 
-    //int rev_pivo = site_get_relevance(sites[pivo]);
+    if(big != head){
+        // swap root and bigger
+        SITE *aux = array[head];
+        array[head] = array[big];
+        array[big] = aux;
 
-    while(i <= j){
-        //going to right with 'i'
-        while(i <= end && site_get_relevance(sites[i]) <= site_get_relevance(sites[pivo])) i++;
-        //going to left with 'j'
-        while(site_get_relevance(sites[j]) > site_get_relevance(sites[pivo])) j--;
-        //changing 'i' and 'j' positions
-        if(i < j){
-            SITE *aux = sites[i];
-            sites[i] = sites[j];
-            sites[j] = aux;
-        }
+        // calls the sub-tree
+        heapify(array, n, big);
     }
-    
-    //changing pivo and 'j' positions
-    pivo = j;
-    SITE *temp = sites[pivo];
-    sites[pivo] = sites[start];
-    sites[start] = temp;
+}
 
-    //recursive calls
-    quick_sort(sites, start, pivo - 1);
-    quick_sort(sites, pivo + 1, end);
+void heap_sort(SITE **array, int n){
+    // build max heap
+    for(int i = n/2 - 1; i >= 0; i--)
+        heapify(array, n, i);
+
+    for(int i = n - 1; i > 0; i--){
+        // moves current root (larger) to the end of the array
+        SITE *aux = array[0];
+        array[0] = array[i];
+        array[i] = aux;
+
+        // call max heap on the reduced array
+        heapify(array, i, 0);
+    }
 }
 
 int count_char (char *string, char searched){

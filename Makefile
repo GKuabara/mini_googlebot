@@ -31,4 +31,4 @@ clean:
 	@rm -r *.o 
 
 zip:
-	zip -r MiniGooglebot2.zip Makefile ./includes/ ./sources/ ./main.c ./googlebot.txt
+	zip -r MiniGooglebot2.zip Makefile ./includes/ ./sources/ ./main.c ./googlebot.txt ./README.md
