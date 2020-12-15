@@ -3,7 +3,7 @@ Projeto da universidade da disciplina Algoritmos e Estruturas de Dados.
 
 Este projeto é apenas um simples googlebot. Lemos um arquivo csv e construímos uma árvore AVL para armazenar as informações dos sites. A partir desse ponto existem 7 implementações para modificar ou usar os dados da nossa estrutura de dados, como inserir e remover sites, atualizar dados sobre eles, e sugestões de sites baseadas nas especificações de cada um.
 
-## Participants
+## Participantes
 * Gabriel Alves Kuabara - N° USP 11275043 - gabrielalveskuabara@usp.br
 * Gabriel Freitas Ximenes de Vasconcelos - N° USP 11819084 - gabriel.vasconcelos@usp.br
 
