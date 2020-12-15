@@ -130,32 +130,6 @@ int site_get_nkeywords(SITE *site){
     return 0;
 }
 
-char *site_struct_to_string(SITE *site){
-    char *line = malloc(sizeof(char) * 0);
-
-    char *aux1;
-    sprintf(aux1, "%d", site->key);
-    strcat(line, aux1);
-    strcat(line, ",");
-
-    strcat(line, site->name);
-    strcat(line, ",");
-    
-    char *aux2;
-    sprintf(aux2, "%d", site->relevance);
-    strcat(line, aux2);
-    strcat(line, ",");
-
-    strcat(line, site->URL);
-    strcat(line, ",");
-
-    for(int i = 0; i < site->num_kw; i++){
-        strcat(line, site->keywords[i]);
-        if(i != site->num_kw - 1) strcat(line, ",");
-    }
-    return line;
-}
-
 SITE* create_site_from_googlebot(FILE* fp){
     char* line = readLine(fp);
     int nKeywords = 0;
