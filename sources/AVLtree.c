@@ -220,42 +220,6 @@ void insert_node(TREE *tree, SITE *new_site){
 	tree->root = insert(tree->root, new_site);
 }
 
-NODE *insert_by_relevance(NODE *node, SITE *new_site){
-	// insert node
-	if(!node) return node_create(new_site);
-
-	// search for insertion
-	int num = site_get_relevance(new_site);
-	int key = site_get_relevance(node->site);
-	if(num < key) node->left = insert_by_relevance(node->left, new_site);
-	else if(num > key) node->right = insert_by_relevance(node->right, new_site);
-
-	// returnin through the recursive calls, updating height, balance, and rotating if necessary
-	node->height = 1 + large(node_height(node->left), node_height(node->right));
-
-	int balance = balance_factor(node);
-	if(balance > 1){
-		int key = site_get_relevance(node->left->site);
-		if(num < key) node = rotation_Right(node);
-		else node = rotation_Left_Right(node);
-	}
-	if(balance < -1){
-		int key = site_get_relevance(node->right->site);
-		if(num > key) node = rotation_Left(node);
-		else node = rotation_Right_Left(node);
-	}
-
-	return node;
-}
-
-void insert_node_by_relevance(TREE *tree, SITE *new_site){
-	if(!tree){
-		printf("No tree, sorry...\n");
-		return;
-	}
-	tree->root = insert_by_relevance(tree->root, new_site);
-}
-
 //__________________________________________________________________________________________________
 
 NODE *delete(NODE **node, int num){
@@ -329,9 +293,9 @@ boolean tree_insert_keyword(TREE *tree, int key, char *keyword){
 	if(actual && site_get_key(actual->site) == key){
 		//function to add a keyword in the site
 		boolean answer = site_add_keyword(actual->site, keyword);
-		if (answer == FALSE)
-			return FALSE;
-		printf("New keyword added\n");
+		if (answer == FALSE) return FALSE;
+
+		printf("\nNew keyword added to site %s\n", site_get_name(actual->site));
 		return TRUE;
 	}
 
@@ -350,7 +314,7 @@ boolean tree_update_relevance(TREE *tree, int key, int relevance){
 	if(actual && site_get_key(actual->site) == key){
 		//function to access site relevance content
 		site_set_relevance(actual->site, relevance);
-		printf("Revelance updated with success\n");
+		printf("\nRevelance of site %s updated with success\n", site_get_name(actual->site));
 		return TRUE;
 	}
 
@@ -388,10 +352,10 @@ void search_and_sort_sites_with_keyword(TREE *tree, char *str){
 	// sort matrix 'sites'
 	heap_sort(sites, count);
 
-	printf("\nSo, these are the sites with keyword '%s':\n", str);
+	printf("\nSo, these are the sites with keyword [%s]:\n\n", str);
 	for (int i = count - 1; i >= 0; i--)
 		printf("%s - %s\n", site_get_name(sites[i]), site_get_URL(sites[i]));
-	printf("\n");
+
 	free(sites); sites = NULL;
 }
 
@@ -445,7 +409,7 @@ void sites_suggestions(TREE *tree, char *str){
 		printf("Sorry, there are no sites with your keyword...\n");
 		return;
 	}
-	printf("Count: %d\n", count);
+	//printf("Sites with keyword [%s]: %d\n", str, count);
 
 	// gets all keywords from our sites' array into a TRIE TREE
 	TRIE *all_keywords = get_all_keywords_from_sites(sites, count);
@@ -454,7 +418,7 @@ void sites_suggestions(TREE *tree, char *str){
 	int nsites = 0;
 	SITE **all_sites = NULL;
 	search_sites_keywords_in_trie(&all_sites, tree->root, all_keywords, &nsites);
-	printf("nsites: %d\n", nsites);
+	//printf("Total number of recommended sites: %d\n", nsites);
 
 	if (nsites < 5){
 		printf("Sorry, the minimum of five sites to suggest was not accomplished\n");
@@ -467,7 +431,7 @@ void sites_suggestions(TREE *tree, char *str){
 	// bubble sort for just 5 positions of the sites' array
 	bubble_sort(all_sites, nsites);
 
-	printf("\nSuggested sites for you, baby:\n");
+	printf("\nSuggested sites for you, baby:\n\n");
 	for(int i = 1; i <= 5; i++)
 		printf("%s - %s\n", site_get_name(all_sites[nsites - i]), site_get_URL(all_sites[nsites - i]));
 

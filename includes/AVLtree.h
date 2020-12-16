@@ -47,13 +47,10 @@ NODE *rotation_Right_Left(NODE *node);
 NODE *search_node(NODE *node, int key);
 NODE *insert(NODE *node, SITE *site);
 void insert_node(TREE *tree, SITE *site);
-NODE *insert_by_relevance(NODE *node, SITE *new_site);
-void insert_node_by_relevance(TREE *tree, SITE *new_site);
 
 // deletion node funtions
 NODE *delete(NODE **node, int num);
 void delete_node(TREE *tree, int key);
-
 
 // update keywords and relevance
 boolean tree_insert_keyword(TREE *tree, int key, char *keyword);

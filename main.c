@@ -34,6 +34,7 @@ void start_messages(){
 void operations(TREE *tree){
 
 	while(TRUE){
+		printf("__________________________________________________________________________________________________\n");
 		printf("\nPlease, type a command: ");
 		char* op = readLine(stdin);
 
@@ -42,6 +43,7 @@ void operations(TREE *tree){
 			printf("\nPlease, write all the site information as CSV: ");
 			SITE *site = create_site_from_googlebot(stdin);
 			insert_node(tree, site);
+			printf("\nSite inserted\n");
 		}
 
 		//remove site
@@ -57,6 +59,7 @@ void operations(TREE *tree){
 			else
 				delete_node(tree, code2Int);
 
+			printf("\nSite deleted\n");
 			free(code2);
 		}
 
@@ -108,7 +111,6 @@ void operations(TREE *tree){
 
 		else if(!strcmp(op, "5")){
 			printf("\nType your keyword and we search sites for you ٩(^‿^)۶ : ");
-			getchar();
 			char *str5 = readLine(stdin);
 			search_and_sort_sites_with_keyword(tree, str5);
 			free(str5); str5 = NULL;
@@ -116,7 +118,6 @@ void operations(TREE *tree){
 
 		else if(!strcmp(op, "6")){
 			printf("\nType your keyword and just wait for some suggestions ~(‾▿‾)~ : ");
-			getchar();
 			char *str6 = readLine(stdin);
 			sites_suggestions(tree, str6);
 			free(str6); str6 = NULL;
@@ -130,6 +131,11 @@ void operations(TREE *tree){
 			return;
 		}
 
+		// just auxiliar function to help to see all the sites information
+		else if(!strcmp(op, "8")){
+			print_tree(tree);
+		}
+		
 		else
 			printf("\nPlease, can you type a valid operation number? ლ(ಠ益ಠლ)╯\n");
 
