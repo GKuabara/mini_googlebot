@@ -211,6 +211,8 @@ NODE *insert(NODE *node, SITE *new_site){
 }
 
 void insert_node(TREE *tree, SITE *new_site){
+	if (!new_site)	return;
+	
 	if(!tree){
 		printf("No tree, sorry...\n");
 		return;
@@ -326,7 +328,9 @@ boolean tree_insert_keyword(TREE *tree, int key, char *keyword){
 	// if 'actual' key is equal as the input key, so insert keyword
 	if(actual && site_get_key(actual->site) == key){
 		//function to add a keyword in the site
-		site_add_keyword(actual->site, keyword);
+		boolean answer = site_add_keyword(actual->site, keyword);
+		if (answer == FALSE)
+			return FALSE;
 		printf("New keyword added\n");
 		return TRUE;
 	}
@@ -441,6 +445,7 @@ void sites_suggestions(TREE *tree, char *str){
 		printf("Sorry, there are no sites with your keyword...\n");
 		return;
 	}
+	printf("Count: %d\n", count);
 
 	// gets all keywords from our sites' array into a TRIE TREE
 	TRIE *all_keywords = get_all_keywords_from_sites(sites, count);
@@ -449,6 +454,15 @@ void sites_suggestions(TREE *tree, char *str){
 	int nsites = 0;
 	SITE **all_sites = NULL;
 	search_sites_keywords_in_trie(&all_sites, tree->root, all_keywords, &nsites);
+	printf("nsites: %d\n", nsites);
+
+	if (nsites < 5){
+		printf("Sorry, the minimum of five sites to suggest was not accomplished\n");
+		free(sites);
+		trie_destroy(all_keywords);
+		free(all_sites);
+		return;
+	}
 
 	// bubble sort for just 5 positions of the sites' array
 	bubble_sort(all_sites, nsites);

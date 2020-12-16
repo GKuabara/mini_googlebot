@@ -35,77 +35,105 @@ void operations(TREE *tree){
 
 	while(TRUE){
 		printf("\nPlease, type a command: ");
-		int op;
-		scanf("%d", &op);
+		char* op = readLine(stdin);
 
-		switch(op){
-			//insert new site
-			case 1:
-				printf("\nPlease, write all the site information as CSV: ");
-				getchar();
-				SITE *site = create_site_from_googlebot(stdin);
-				insert_node(tree, site);
-				break;
+		//insert new site
+		if(!strcmp(op, "1")){
+			printf("\nPlease, write all the site information as CSV: ");
+			SITE *site = create_site_from_googlebot(stdin);
+			insert_node(tree, site);
+		}
 
-			//remove site
-			case 2:
-				printf("\nType the site code you want to delete: ");
-				int code2;
-				scanf("%d", &code2);
-				delete_node(tree, code2);
-				break;
+		//remove site
+		else if(!strcmp(op, "2")){
+			printf("\nType the site code you want to delete: ");
+			char* code2 = readLine(stdin);
+			char* code2Aux = code2;
 
-			//new key word
-			case 3:
-				printf("\nType the site code you want to add a keyword: ");
-				int code3;
-				scanf("%d", &code3); getchar();
+			int code2Int = atoi(code2Aux);
 
-				printf("\nType the new keyword: ");
-				char *keyword = readLine(stdin);
-				
-				tree_insert_keyword(tree, code3, keyword);
-				free(keyword); keyword = NULL;
-				break;
+			if (code2Int == 0 && strcmp(code2, "0") != 0)
+				printf("You typed an invalid site code.\n");
+			else
+				delete_node(tree, code2Int);
 
-			//update relevance
-			case 4:
-				printf("\nType the site code you want to update relevance: ");
-				int code4;
-				scanf("%d", &code4);
+			free(code2);
+		}
+
+		//new key word
+		else if(!strcmp(op, "3")){
+			printf("\nType the site code you want to add a keyword: ");
+			char* code3 = readLine(stdin);
+			char* code3Aux = code3;
+
+			printf("\nType the new keyword: ");
+			char *keyword = readLine(stdin);
+
+			int code3Int = atoi(code3Aux);
+
+			if (code3Int == 0 && strcmp(code3, "0") != 0)
+				printf("You typed an invalid site code.\n");
+			else
+				tree_insert_keyword(tree, code3Int, keyword);
+
+			free(keyword); keyword = NULL;
+			free(code3);
+		}
+
+		//update relevance
+		else if(!strcmp(op, "4")){
+			printf("\nType the site code you want to update relevance: ");
+			char* code4 = readLine(stdin);
+			char* code4Aux = code4;
+			int code4Int = atoi(code4Aux);
+
+			if (code4Int == 0 && strcmp(code4, "0") != 0)
+				printf("You typed an invalid site code.\n");
+			else{
 
 				printf("\nType the new relevance: ");
-				int relevance;
-				scanf("%d", &relevance);
-				tree_update_relevance(tree, code4, relevance);
-				break;
+				char* relevance = readLine(stdin);
+				char* relevanceAux = relevance;
+				int relevanceInt = atoi(relevanceAux);
 
-			case 5:
-				printf("\nType your keyword and we search sites for you ٩(^‿^)۶ : ");
-				getchar();
-				char *str5 = readLine(stdin);
-				search_and_sort_sites_with_keyword(tree, str5);
-				free(str5); str5 = NULL;
-				break;
+				if (relevanceInt == 0 && strcmp(relevance, "0") != 0)
+					printf("You typed an invalid relevance.\n");
+				else
+					tree_update_relevance(tree, code4Int, relevanceInt);
 
-			case 6:
-				printf("\nType your keyword and just wait for some suggestions ~(‾▿‾)~ : ");
-				getchar();
-				char *str6 = readLine(stdin);
-				sites_suggestions(tree, str6);
-				free(str6); str6 = NULL;
-				break;
-
-			//get out:
-			case 7:
-				printf("\nOh no, this is a Good bye? (╥﹏╥)\n"
-				"Take care of yourself! See you again!!!\n");				
-				return;
-
-			default:
-				printf("\nPlease, can you type a valid operation number? ლ(ಠ益ಠლ)╯\n");
-				break;
+				free(relevance);
+			}
+			free(code4);
 		}
+
+		else if(!strcmp(op, "5")){
+			printf("\nType your keyword and we search sites for you ٩(^‿^)۶ : ");
+			getchar();
+			char *str5 = readLine(stdin);
+			search_and_sort_sites_with_keyword(tree, str5);
+			free(str5); str5 = NULL;
+		}
+
+		else if(!strcmp(op, "6")){
+			printf("\nType your keyword and just wait for some suggestions ~(‾▿‾)~ : ");
+			getchar();
+			char *str6 = readLine(stdin);
+			sites_suggestions(tree, str6);
+			free(str6); str6 = NULL;
+		}
+
+		//get out:
+		else if(!strcmp(op, "7")){
+			printf("\nOh no, this is a Good bye? (╥﹏╥)\n"
+			"Take care of yourself! See you again!!!\n");
+			free(op);				
+			return;
+		}
+
+		else
+			printf("\nPlease, can you type a valid operation number? ლ(ಠ益ಠლ)╯\n");
+
+		free(op);
 	}
 }
 

@@ -9,7 +9,7 @@ all:
 	@$(CC) $(PROG) $(SOURCES)/* $(FLAGS) $(BINARY) -I $(INCLUDES)
 
 valgrind:
-	@valgrind --track-origins=yes --leak-check=full --show-leak-kinds=all $(BINARY)
+	@valgrind --track-origins=yes --leak-check=full --show-leak-kinds=all ./$(BINARY)
 
 run:
 	@./$(BINARY)

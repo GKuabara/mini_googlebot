@@ -52,7 +52,7 @@ boolean site_delete(SITE **site) {
 
 void site_print(SITE *site) {
     if (site){
-        printf("%d,%s,%d,%s,%d", site->key, site->name, site->relevance, site->URL,site->num_kw);
+        printf("%d,%s,%d,%s", site->key, site->name, site->relevance, site->URL);
         for(int i = 0; i < site->num_kw; i++) printf(",%s", site->keywords[i]);
         printf("\n");
     }
@@ -101,6 +101,10 @@ boolean site_set_relevance(SITE *site, int relevance){
 
 boolean site_add_keyword(SITE *site, char *word){
     if(!site) return FALSE;
+    if (site->num_kw == 10){
+        printf("There are already ten keywords in this site. You cannot add any further\n");
+        return FALSE;
+    }
     site->keywords = realloc(site->keywords, sizeof(char *) * (site->num_kw + 1));
     site->keywords[site->num_kw] = strPart(word, NULL, NULL);
     site->num_kw++;
@@ -134,6 +138,11 @@ SITE* create_site_from_googlebot(FILE* fp){
     char* line = readLine(fp);
     int nKeywords = 0;
     nKeywords = count_char(line, ',') - 3;
+    if (nKeywords > 10){
+        free(line);
+        printf("Maximum keywords alowed are 10\n");
+        return NULL;
+    }
     char* codeChar = strsep(&line, ",");
     int code = atoi(codeChar);
     char* name = strsep(&line, ",");
