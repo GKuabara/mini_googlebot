@@ -14,10 +14,10 @@ GNU Compiler Collection (GCC).
 Anteriormente tinhamos implementado uma lista simplesmente encadeada como estrutura de dados principal. Agora decidimos mudar para uma árvore AVL como estrutura principal, e uma árvore TRIE como estrutura auxiliar para otimizarmos as novas funções implementadas ao nosso programa.
 
 ### Arquivo .csv de Entrada
-O arquivo que usamos para carregar a informação de sites trata-se de um arquivo do tipo csv, sem espaços com os seguintes parâmetros respectivamente: a chave de identificação do site, o nome do site, seu nome, seu valor de relevancia, seu endereço(URL), e suas palavras-chaves(no máximo 10).
+O arquivo que usamos para carregar a informação de sites trata-se de um arquivo do tipo csv, sem espaços e somente com letra minúscula com os seguintes parâmetros, respectivamente: a chave de identificação do site, o nome do site, seu nome, seu valor de relevancia, seu endereço(URL), e suas palavras-chaves(no máximo 10).
 
 ### Árvore AVL
-Considerando as estruturas disponíveis para construir nosso projeto, uma árvore AVL nos permite fazer uma busca pela chave de um site com complexidade O(log(n)) (busca binária, devido a ordenação da AVL de acordo com o valor da chave), sendo mais rápida do que estruturas de dados sequenciais, como uma lista encadeada usada anteriormente, cuja eficiencia é O(n). Dessa forma, é possivel fazer busca por sites, inserções e remoções de maneira mais eficiente que a lista.
+Considerando as estruturas disponíveis para construir nosso projeto, uma árvore AVL nos permite fazer uma busca pela chave de um site com complexidade O(log(n)) (busca binária, devido a ordenação da AVL de acordo com o valor da chave), sendo mais rápida do que estruturas de dados lineares, como uma lista encadeada usada anteriormente, cuja eficiencia é O(n). Dessa forma, é possivel fazer busca por sites, inserções e remoções de maneira mais eficiente que a lista.
 
 Além disso, quando pensamos nas funções de busca de uma palavra-chave em cada site (nova e função principal do programa), para usar uma árvore ou uma lista não existe uma grande diferença porque precisamos acessar todos os sites em ambos os casos. Portanto, preferimos usar a árvore AVL com chaves ordenadas para melhorar a eficiência de outras funções do programa.
 
@@ -27,9 +27,9 @@ Um tipo de árvore que se encaixa perfeitamente com a otimização do problema d
 Ademais, trata-se de uma estrutura otimizada, pois cada busca inserção e busca na árvore depende diretamento do tamanho da palavra, que resulta em complexidade O(c) no pior caso, sendo 'c' o tamanho da palavra.
 
 ### Busca por Palavra-Chave (nova e principal função do programa)
-Como solicitado, essa função recebe como parâmetro uma palavra-chave que deve ser usada para verificar qual sites a contém, retornando os sites ordenados por maior relevância. Para resolver esse problema, primeiro lemos a palavra-chave e então percorremos a árvore de maneira recursiva passando por cada site, verificando se a palavra existe dentro das especificações do site. Caso um site conter tal palavra-chave, então, realocamos um vetor de ponteiros SITES para armarzenar o ponteiro para esse site. 
+Como solicitado, essa função recebe como parâmetro uma palavra-chave que deve ser usada para verificar qual sites a contém, retornando os sites ordenados por maior relevância. Para resolver esse problema, primeiro lemos a palavra-chave e então percorremos a árvore de maneira recursiva passando por cada site, verificando se a palavra existe dentro das especificações do site. Caso um site contenha tal palavra-chave, então, realocamos um vetor de ponteiros SITES para armazenar o ponteiro para esse site. 
 
-Após percorrer a árvore inteira, usamos um Heap Sort (complexidade O(nlog(n)), e memória O(1)) para realizar a ordenação dos sites recolhidos e imprimí-los de acordo com sua relevância. No pior caso, a complexidade dessa busca trata-se de passar por todas as palavras-chaves de cada site, ou seja, 10nc, sendo 'n' o número de sites e 'c' o tamanho de cada palavra.
+Após percorrer a árvore inteira, usamos um Heap Sort (complexidade O(nlog(n)), e memória O(1)) para realizar a ordenação dos sites recolhidos e imprimi-los de acordo com sua relevância. No pior caso, a complexidade dessa busca trata-se de passar por todas as palavras-chaves de cada site, ou seja, 10nc, sendo 'n' o número de sites e 'c' o tamanho de cada palavra.
 
 ### Sugestões de sites:
 Em primeiro lugar, usamos a mesma função de "Busca por Palavra-Chave" para construir o vetor de sites com a palavra-chave de entrada. Então, o próximo passo foi usar um árvore TRIE para armazenar todas as palavras-chave dos sites encontrados anteriormente.
