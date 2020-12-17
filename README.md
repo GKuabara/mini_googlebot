@@ -61,3 +61,6 @@ Ao executar o programa, ele primeiro lerá um arquivo csv chamado "googlebot.txt
 
 7. **Encerra o Programa:**
 	* Desaloca toda a memória que o programa usa no momento e encerra o programa.
+
+8. **Imprime Árvore:**
+	* Ajuda a vizualizar a árvore e as modificações das outras funções nos dados. Imprime em ordem crescente pela chave.
