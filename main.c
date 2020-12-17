@@ -28,7 +28,8 @@ void start_messages(){
 	printf("\t4 - Update site relevance\n");
 	printf("\t5 - Search for sites with keyword\n");
 	printf("\t6 - Sites sugestions\n");
-	printf("\t7 - Exit Program\n\n");
+	printf("\t7 - Exit Program\n");
+	printf("\t8 - Print Tree (auxiliar function to analize the program)\n\n");
 }
 
 void operations(TREE *tree){
@@ -63,7 +64,7 @@ void operations(TREE *tree){
 			free(code2);
 		}
 
-		//new key word
+		//new keyword
 		else if(!strcmp(op, "3")){
 			printf("\nType the site code you want to add a keyword: ");
 			char* code3 = readLine(stdin);
@@ -109,6 +110,7 @@ void operations(TREE *tree){
 			free(code4);
 		}
 
+		// search for sites with some keyword
 		else if(!strcmp(op, "5")){
 			printf("\nType your keyword and we search sites for you ٩(^‿^)۶ : ");
 			char *str5 = readLine(stdin);
@@ -116,6 +118,7 @@ void operations(TREE *tree){
 			free(str5); str5 = NULL;
 		}
 
+		// sites sugestions based on a keyword
 		else if(!strcmp(op, "6")){
 			printf("\nType your keyword and just wait for some suggestions ~(‾▿‾)~ : ");
 			char *str6 = readLine(stdin);
@@ -123,7 +126,7 @@ void operations(TREE *tree){
 			free(str6); str6 = NULL;
 		}
 
-		//get out:
+		// exit the program:
 		else if(!strcmp(op, "7")){
 			printf("\nOh no, this is a Good bye? (╥﹏╥)\n"
 			"Take care of yourself! See you again!!!\n");
@@ -132,9 +135,7 @@ void operations(TREE *tree){
 		}
 
 		// just auxiliar function to help to see all the sites information
-		else if(!strcmp(op, "8")){
-			print_tree(tree);
-		}
+		else if(!strcmp(op, "8")) print_tree(tree);
 		
 		else
 			printf("\nPlease, can you type a valid operation number? ლ(ಠ益ಠლ)╯\n");
@@ -144,7 +145,7 @@ void operations(TREE *tree){
 }
 
 int main() {
-	printf("Hello my friend, welcome to our program! Enjoy the trip! ༼ つ ◕_◕ ༽つ \n\n");
+	printf("Hello, welcome to our program! Enjoy the trip! ༼ つ ◕_◕ ༽つ \n\n");
 
 	int nSites = 0;
 	TREE* tree = tree_create();
@@ -159,10 +160,11 @@ int main() {
 		nSites++;
 	}
 	fclose(fp);
-	printf("Success Reading Input Data! Now, you have a tree bro!!!\n\n");
+	printf("Success Reading Input Data! Now, you have an AVL tree filled with sites!!!\n\n");
 
 	start_messages(); //messages that show the commands
-	print_tree(tree);
+	
+	//print_tree(tree);
 	
 	operations(tree); //function that does all the operations required
 

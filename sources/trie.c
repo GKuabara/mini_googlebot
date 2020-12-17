@@ -51,7 +51,7 @@ boolean trie_insert_word(TRIE *db, char *str){
 
 	// get each letter of the string going through the tree
 	for(int i = 0; str[i] != '\0'; i++){
-		int index = char_to_int(str[i]);
+		int index = char_to_int(tolower(str[i]));
 
 		// if the letter doesn't exists, then create it
 		if(!actual->sub[index]){

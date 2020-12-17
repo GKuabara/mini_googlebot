@@ -289,8 +289,8 @@ boolean tree_insert_keyword(TREE *tree, int key, char *keyword){
 	// gets the first site with key equal or larger than the input key
 	NODE *actual = search_node(tree->root, key);
 
-	// if 'actual' key is equal as the input key, so insert keyword
-	if(actual && site_get_key(actual->site) == key){
+	// if 'actual' exists != NULL
+	if(actual){
 		//function to add a keyword in the site
 		boolean answer = site_add_keyword(actual->site, keyword);
 		if (answer == FALSE) return FALSE;
@@ -310,8 +310,8 @@ boolean tree_update_relevance(TREE *tree, int key, int relevance){
 	// gets the first site with key equal or larger than the input key
 	NODE *actual = search_node(tree->root, key);
 
-	// if 'actual' key is equal as the input key, so update relevance
-	if(actual && site_get_key(actual->site) == key){
+	// if 'actual' exists != NULL
+	if(actual){
 		//function to access site relevance content
 		site_set_relevance(actual->site, relevance);
 		printf("\nRevelance of site %s updated with success\n", site_get_name(actual->site));
